@@ -2,39 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PicoClaw Showcase</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PICO-CLAW ENGINE</title>
     <style>
-        body { background: #0e0e0e; color: #39ff14; font-family: monospace; padding: 50px; text-align: center; }
-        .btn-grid { display: flex; gap: 20px; justify-content: center; margin-top: 30px; }
-        .pico-btn { border: 1px solid #39ff14; background: transparent; color: #39ff14; padding: 15px 25px; cursor: pointer; text-transform: uppercase; }
-        .pico-btn:hover { background: #39ff14; color: #000; }
-        #terminal { margin-top: 40px; border: 1px solid #333; padding: 20px; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto; height: 200px; overflow-y: auto; }
+        body { background: #000; color: #39ff14; font-family: 'Courier New', monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
+        h1 { font-size: 3rem; letter-spacing: 2px; margin-bottom: 0; text-shadow: 0 0 10px #39ff14; }
+        .sub { color: #39ff14; margin-bottom: 40px; font-size: 1.2rem; }
+        .btn-container { display: flex; gap: 20px; margin-bottom: 50px; }
+        .btn { border: 2px solid #39ff14; background: transparent; color: #39ff14; padding: 15px 40px; font-size: 1rem; cursor: pointer; text-transform: uppercase; font-weight: bold; transition: 0.3s; }
+        .btn:hover { background: #39ff14; color: #000; box-shadow: 0 0 20px #39ff14; }
+        .btn-blue { border-color: #00d4ff; color: #00d4ff; }
+        .btn-blue:hover { background: #00d4ff; color: #000; box-shadow: 0 0 20px #00d4ff; }
+        #terminal { border: 1px solid #444; width: 80%; max-width: 800px; height: 250px; padding: 20px; background: rgba(10,10,10,0.9); overflow-y: auto; font-size: 1.1rem; box-shadow: inset 0 0 10px #000; }
+        .log-time { color: #666; margin-right: 10px; }
     </style>
 </head>
 <body>
+
     <h1>PICO-CLAW ENGINE</h1>
-    <p>Connected to: www.ray.services</p>
-    
-    <div class="btn-grid">
-        <button class="pico-btn" onclick="sendToRay('ping')">Ping Engine</button>
-        <button class="pico-btn" onclick="sendToRay('git-status')">Repo Status</button>
+    <div class="sub">Connected to: www.ray.services</div>
+
+    <div class="btn-container">
+        <button class="btn" onclick="runCmd('ping')">Ping Engine</button>
+        <button class="btn" onclick="runCmd('git-status')">Repo Status</button>
+        <button class="btn btn-blue" onclick="runCmd('engine-load')">Engine Load</button>
     </div>
 
-    <div id="terminal"> > System Ready...</div>
+    <div id="terminal">
+        <div>> System Initialized... Ready for Input.</div>
+    </div>
 
     <script>
-        async function sendToRay(task) {
+        async function runCmd(task) {
             const term = document.getElementById('terminal');
-            term.innerHTML += `<br>> Sending ${task}...`;
+            const time = new Date().toLocaleTimeString([], {hour12: false});
+            term.innerHTML += `<div><span class="log-time">[${time}]</span> > Executing ${task}...</div>`;
+            
             try {
-                // Pointing to your actual PHP gateway on your domain
+                // This fetches from the 'Website' location
                 const response = await fetch(`https://www.ray.services/active.php?exec=pico&task=${task}`);
                 const data = await response.json();
-                term.innerHTML += `<br>> Response: ${JSON.stringify(data)}`;
-            } catch (e) {
-                term.innerHTML += `<br>> Error: Gateway offline.`;
+                
+                let textColor = (task === 'engine-load') ? '#00d4ff' : 'white';
+                term.innerHTML += `<div style="color:${textColor}">> Response: ${JSON.stringify(data)}</div>`;
+            } catch (err) {
+                term.innerHTML += `<div style="color:#ff4444">> Error: Terminal Link Severed.</div>`;
             }
+            term.scrollTop = term.scrollHeight;
         }
     </script>
 </body>
 </html>
+
