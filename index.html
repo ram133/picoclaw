@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PicoClaw Showcase</title>
+    <style>
+        body { background: #0e0e0e; color: #39ff14; font-family: monospace; padding: 50px; text-align: center; }
+        .btn-grid { display: flex; gap: 20px; justify-content: center; margin-top: 30px; }
+        .pico-btn { border: 1px solid #39ff14; background: transparent; color: #39ff14; padding: 15px 25px; cursor: pointer; text-transform: uppercase; }
+        .pico-btn:hover { background: #39ff14; color: #000; }
+        #terminal { margin-top: 40px; border: 1px solid #333; padding: 20px; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto; height: 200px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <h1>PICO-CLAW ENGINE</h1>
+    <p>Connected to: www.ray.services</p>
+    
+    <div class="btn-grid">
+        <button class="pico-btn" onclick="sendToRay('ping')">Ping Engine</button>
+        <button class="pico-btn" onclick="sendToRay('git-status')">Repo Status</button>
+    </div>
+
+    <div id="terminal"> > System Ready...</div>
+
+    <script>
+        async function sendToRay(task) {
+            const term = document.getElementById('terminal');
+            term.innerHTML += `<br>> Sending ${task}...`;
+            try {
+                // Pointing to your actual PHP gateway on your domain
+                const response = await fetch(`https://www.ray.services/active.php?exec=pico&task=${task}`);
+                const data = await response.json();
+                term.innerHTML += `<br>> Response: ${JSON.stringify(data)}`;
+            } catch (e) {
+                term.innerHTML += `<br>> Error: Gateway offline.`;
+            }
+        }
+    </script>
+</body>
+</html>
