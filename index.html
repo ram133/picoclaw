@@ -1,132 +1,17 @@
-<?php // PICO-CLAW ENGINE - Integrated Terminal for www.ray.services
-/**
- * PICO-CLAW ENGINE - Command Handler
- * Executes repository checks based on button triggers.
- */
-if (isset($_POST['action'])) {
-    header('Content-Type: application/json');
-    $action = $_POST['action'];
-    $response = ["status" => "error", "message" => "Unknown Command"];
-
-    switch ($action) {
-        case 'ping':
-            $response = ["status" => "success", "message" => "PONG - Link Active"];
-            break;
-        case 'repo_status':
-            $files = ['Dockerfile', 'workspace', '.env.example', '.goreleaser.yaml'];
-            $found = [];
-            foreach ($files as $f) {
-                if (file_exists($f)) $found[] = $f;
-            }
-            $response = ["status" => "success", "message" => "DETECTED: " . implode(", ", $found)];
-            break;
-        case 'engine_load':
-            // Logic to initialize OpenClaw workspace
-            if (is_dir('workspace')) {
-                $response = ["status" => "success", "message" => "ENGINE LOADED - /workspace is Ready"];
-            } else {
-                $response = ["status" => "error", "message" => "LOAD FAILED - /workspace missing"];
-            }
-            break;
-    }
-    echo json_encode($response);
-    exit;
-}
-?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PICO-CLAW ENGINE</title>
+    <title>PICOCLAW LIVE</title>
     <style>
-        body {
-            background-color: #000;
-            color: #39FF14;
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-        .engine-container { width: 100%; max-width: 800px; text-align: center; }
-        h1 { font-size: 2.5rem; text-transform: uppercase; letter-spacing: 4px; text-shadow: 0 0 10px #39FF14; margin-bottom: 5px; }
-        .connection-status { font-size: 0.9rem; margin-bottom: 30px; color: #fff; }
-        .button-row { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
-        .btn {
-            background: transparent; color: #39FF14; border: 2px solid #39FF14;
-            padding: 10px 20px; font-family: inherit; font-weight: bold;
-            cursor: pointer; text-transform: uppercase; transition: all 0.3s ease;
-        }
-        .btn:hover { background: #39FF14; color: #000; box-shadow: 0 0 15px #39FF14; }
-        .btn-blue { color: #00F0FF; border-color: #00F0FF; }
-        .btn-blue:hover { background: #00F0FF; color: #000; box-shadow: 0 0 15px #00F0FF; }
-        #terminal-output {
-            width: 100%; height: 300px; background: #050505; border: 1px solid #444;
-            padding: 15px; text-align: left; font-size: 0.85rem; overflow-y: auto;
-            box-sizing: border-box; color: #39FF14; box-shadow: inset 0 0 10px #000;
-        }
-        .error-text { color: #FF3131; }
-        .cursor { display: inline-block; width: 10px; height: 18px; background: #39FF14; vertical-align: middle; animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
+        body { margin: 0; background: #000; color: #fff; text-align: center; font-family: sans-serif; }
+        .feed-container { max-width: 800px; margin: 20px auto; border: 2px solid #333; }
+        img { width: 100%; height: auto; display: block; }
     </style>
 </head>
 <body>
-
-    <div class="engine-container">
-        <h1>PICO-CLAW ENGINE</h1>
-        <div class="connection-status">Connected to: www.ray.services</div>
-
-        <div class="button-row">
-            <button class="btn" onclick="sendCommand('ping')">Ping Engine</button>
-            <button class="btn" onclick="sendCommand('repo_status')">Repo Status</button>
-            <button class="btn btn-blue" onclick="sendCommand('engine_load')">Engine Load</button>
-        </div>
-
-        <div id="terminal-output">
-            > System Initialized... Ready for Input. <span class="cursor"></span>
-        </div>
+    <h2>PICOCLAW LIVE FEED</h2>
+    <div class="feed-container">
+        <img src="/stream.mjpg" alt="Live Feed" onerror="this.src='https://via.placeholder.com/600x400?text=Waiting+for+Stream...'">
     </div>
-
-    <script>
-        const terminal = document.getElementById('terminal-output');
-
-        async function sendCommand(action) {
-            const timestamp = new Date().toLocaleTimeString();
-            appendLine(`> Executing ${action}...`, '#fff');
-
-            try {
-                const formData = new FormData();
-                formData.append('action', action);
-
-                const response = await fetch('active.php', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    appendLine(`> ${data.message}`, '#39FF14');
-                } else {
-                    appendLine(`> Error: ${data.message}`, '#FF3131');
-                }
-            } catch (err) {
-                appendLine(`> Error: Terminal Link Severed.`, '#FF3131');
-            }
-        }
-
-        function appendLine(text, color) {
-            const div = document.createElement('div');
-            div.style.color = color;
-            div.textContent = text;
-            terminal.insertBefore(div, terminal.lastChild);
-            terminal.scrollTop = terminal.scrollHeight;
-        }
-    </script>
 </body>
 </html>
-
