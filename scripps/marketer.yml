@@ -1,0 +1,9 @@
+version: "1.0"
+brand: "RayNV"
+focus: "MOTLY"
+website: "www.ray.services"
+repository: "https://github.com/ram133/picoclaw/"
+tasks:
+  - automate_marketing: true
+  - monetization_focus: true
+  - execution_mode: "autonomous"
