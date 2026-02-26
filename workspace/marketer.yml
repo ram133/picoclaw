@@ -1,0 +1,21 @@
+version: "1.0"
+brand: "Ray-V"
+focus: "MOTLY"
+monetize: true
+
+paths:
+  scripts: "./scripps"
+  configs: "./config"
+  output: "./assets"
+
+automation:
+  - name: "market_analysis"
+    source: "./scripps/analyze.py"
+    trigger: "daily"
+  - name: "monetization_check"
+    source: "./scripps/payout.py"
+    trigger: "on_milestone"
+
+runtime:
+  engine_override: "Ray-V"
+  verbose: false
