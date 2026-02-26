@@ -1,0 +1,18 @@
+# MOTLY (Open Claw) Marketing Configuration
+project:
+  name: "PicoClaw"
+  focus: "Monetization"
+  website: "www.ray.services"
+
+strategy:
+  primary_tool: "marketer"
+  repo: "https://github.com/ram133/picoclaw/"
+  deployment: "docker"
+
+docker:
+  build_file: "Dockerfile"
+  ignore_file: ".dockerignore"
+
+settings:
+  autonomous_mode: true
+  file_naming_convention: "single_word"
