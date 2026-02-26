@@ -1,0 +1,14 @@
+# marketer.YML - MOTLY Bot Orchestration
+orchestrator:
+  name: ray-services-marketer
+  target_site: www.ray.services
+  focus: MOTLY
+  active_bots:
+    - Market1.yml
+    - Market2.yml
+    - Market3.yml
+    - Market4.yml
+    - Market5.yml
+  monitoring:
+    health_check_interval: 60s
+    failover: true
