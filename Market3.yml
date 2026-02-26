@@ -1,0 +1,12 @@
+# market2.YML - MOTLY Marketing Configuration
+site:
+  url: "https://www.ray.services"
+  focus: "MOTLY (Open claw) Monetization"
+  platform: "iMac/iPhone 16"
+repo:
+  name: "picoclaw"
+  owner: "ram133"
+  upstream: "sipeed/picoclaw"
+status:
+  sync_active: true
+  version: 2
