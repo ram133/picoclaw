@@ -1,17 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>PICOCLAW LIVE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ray-V Engine | MOTLY</title>
     <style>
-        body { margin: 0; background: #000; color: #fff; text-align: center; font-family: sans-serif; }
-        .feed-container { max-width: 800px; margin: 20px auto; border: 2px solid #333; }
-        img { width: 100%; height: auto; display: block; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3rem;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 30px;
+        }
+        a {
+            color: #007aff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .cta {
+            padding: 12px 24px;
+            background: #fff;
+            color: #000;
+            border-radius: 8px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
-    <h2>PICOCLAW LIVE FEED</h2>
-    <div class="feed-container">
-        <img src="/stream.mjpg" alt="Live Feed" onerror="this.src='https://via.placeholder.com/600x400?text=Stream+Connecting...'">
-    </div>
+    <h1>Ray-V Engine</h1>
+    <p>The core of MOTLY monetization.</p>
+    <a href="https://www.ray.services" class="cta">Visit ray.services</a>
 </body>
 </html>
