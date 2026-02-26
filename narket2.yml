@@ -1,0 +1,11 @@
+# marketer.yml - MOTLY Monetization Config
+version: '1.0'
+project: MOTLY
+focus: monetization
+services:
+  - name: ray.services
+    status: active
+    priority: high
+strategy:
+  - open_claw_integration
+  - autonomous_scaling
