@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROI Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans p-6">
+    <div class="max-w-md mx-auto bg-gray-800 rounded-xl shadow-md overflow-hidden md:max-w-2xl p-8">
+        <h2 class="text-2xl font-bold mb-6 text-center">PicoClaw ROI Tracker</h2>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium">Initial Investment ($)</label>
+                <input type="number" id="cost" class="w-full p-2 bg-gray-700 border border-gray-600 rounded mt-1" placeholder="0.00">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Current Value ($)</label>
+                <input type="number" id="revenue" class="w-full p-2 bg-gray-700 border border-gray-600 rounded mt-1" placeholder="0.00">
+            </div>
+            <button onclick="calculateROI()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
+                Calculate
+            </button>
+        </div>
+
+        <div id="result" class="mt-8 text-center hidden">
+            <p class="text-lg">Your ROI is:</p>
+            <h1 id="roi-value" class="text-4xl font-bold text-green-400">0%</h1>
+        </div>
+    </div>
+
+    <script>
+        function calculateROI() {
+            const cost = parseFloat(document.getElementById('cost').value);
+            const revenue = parseFloat(document.getElementById('revenue').value);
+            const resultDiv = document.getElementById('result');
+            const roiValue = document.getElementById('roi-value');
+
+            if (cost > 0) {
+                const roi = ((revenue - cost) / cost) * 100;
+                roiValue.innerText = roi.toFixed(2) + '%';
+                roiValue.className = roi >= 0 ? 'text-4xl font-bold text-green-400' : 'text-4xl font-bold text-red-400';
+                resultDiv.classList.remove('hidden');
+            } else {
+                alert("Please enter an investment greater than 0.");
+            }
+        }
+    </script>
+</body>
+</html>
