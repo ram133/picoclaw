@@ -3,49 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROI Calculator</title>
+    <title>ROI Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; }
+        .card { background-color: #1e293b; border: 1px solid #334155; }
+        .input-field { background-color: #0f172a; border: 1px solid #475569; color: white; }
+    </style>
 </head>
-<body class="bg-gray-900 text-white font-sans p-6">
-    <div class="max-w-md mx-auto bg-gray-800 rounded-xl shadow-md overflow-hidden md:max-w-2xl p-8">
-        <h2 class="text-2xl font-bold mb-6 text-center">PicoClaw ROI Tracker</h2>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="card max-w-lg w-full rounded-2xl shadow-2xl p-8">
+        <h1 class="text-3xl font-extrabold mb-2 text-blue-400 text-center">Ray-V Engine ROI</h1>
+        <p class="text-gray-400 text-center mb-8 text-sm">Automated Performance Tracker</p>
         
-        <div class="space-y-4">
+        <div class="space-y-6">
             <div>
-                <label class="block text-sm font-medium">Initial Investment ($)</label>
-                <input type="number" id="cost" class="w-full p-2 bg-gray-700 border border-gray-600 rounded mt-1" placeholder="0.00">
+                <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Total Investment ($)</label>
+                <input type="number" id="cost" class="input-field w-full p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="0.00">
             </div>
             <div>
-                <label class="block text-sm font-medium">Current Value ($)</label>
-                <input type="number" id="revenue" class="w-full p-2 bg-gray-700 border border-gray-600 rounded mt-1" placeholder="0.00">
+                <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">Gross Revenue ($)</label>
+                <input type="number" id="revenue" class="input-field w-full p-3 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="0.00">
             </div>
-            <button onclick="calculateROI()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
-                Calculate
+            
+            <button onclick="calculate()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transform active:scale-95 transition-all shadow-lg">
+                RUN ANALYSIS
             </button>
-        </div>
 
-        <div id="result" class="mt-8 text-center hidden">
-            <p class="text-lg">Your ROI is:</p>
-            <h1 id="roi-value" class="text-4xl font-bold text-green-400">0%</h1>
+            <div id="display" class="hidden mt-8 p-6 rounded-xl bg-slate-900 border border-slate-700 text-center">
+                <div class="text-sm text-gray-400 mb-1">Return on Investment</div>
+                <div id="roi-pct" class="text-5xl font-black mb-2">0%</div>
+                <div id="profit-val" class="text-lg font-medium"></div>
+                
+                <div class="mt-4 pt-4 border-t border-slate-700">
+                    <div class="text-xs text-blue-400 font-bold uppercase">Monetization Status</div>
+                    <div id="status-msg" class="text-sm mt-1 text-gray-300"></div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        function calculateROI() {
-            const cost = parseFloat(document.getElementById('cost').value);
-            const revenue = parseFloat(document.getElementById('revenue').value);
-            const resultDiv = document.getElementById('result');
-            const roiValue = document.getElementById('roi-value');
+        function calculate() {
+            const cost = parseFloat(document.getElementById('cost').value) || 0;
+            const rev = parseFloat(document.getElementById('revenue').value) || 0;
+            const display = document.getElementById('display');
+            const roiPct = document.getElementById('roi-pct');
+            const profitVal = document.getElementById('profit-val');
+            const statusMsg = document.getElementById('status-msg');
 
-            if (cost > 0) {
-                const roi = ((revenue - cost) / cost) * 100;
-                roiValue.innerText = roi.toFixed(2) + '%';
-                roiValue.className = roi >= 0 ? 'text-4xl font-bold text-green-400' : 'text-4xl font-bold text-red-400';
-                resultDiv.classList.remove('hidden');
+            if (cost === 0 && rev === 0) return;
+
+            const profit = rev - cost;
+            const roi = cost !== 0 ? (profit / cost) * 100 : 0;
+
+            display.classList.remove('hidden');
+            roiPct.innerText = roi.toFixed(2) + '%';
+            roiPct.className = roi >= 0 ? 'text-5xl font-black mb-2 text-green-400' : 'text-5xl font-black mb-2 text-red-400';
+            
+            profitVal.innerText = (profit >= 0 ? '+$' : '-$') + Math.abs(profit).toLocaleString();
+            profitVal.className = profit >= 0 ? 'text-lg font-medium text-green-500' : 'text-lg font-medium text-red-500';
+
+            if (roi >= 100) {
+                statusMsg.innerText = "SCALABLE: High-yield asset confirmed.";
+            } else if (roi > 0) {
+                statusMsg.innerText = "PROFITABLE: Optimization recommended.";
             } else {
-                alert("Please enter an investment greater than 0.");
+                statusMsg.innerText = "CRITICAL: Immediate pivot required.";
             }
         }
     </script>
 </body>
 </html>
+
