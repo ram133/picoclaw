@@ -1,21 +1,27 @@
-# /Users/Shared/relay.py
-
 import smtplib
 from email.message import EmailMessage
 
 def send_relay_email(service, recipient, subject, body):
-    # Configuration for Gmail and iCloud
+    # Fully configured for 3659745@gmail.com and crh2509@icloud.com
     configs = {
-        "gmail": {"host": "smtp.gmail.com", "port": 587, "user": "YOUR_GMAIL@gmail.com"},
-        "icloud": {"host": "smtp.mail.me.com", "port": 587, "user": "YOUR_ICLOUD@icloud.com"}
+        "gmail": {
+            "host": "smtp.gmail.com", 
+            "port": 587, 
+            "user": "3659745@gmail.com"
+        },
+        "icloud": {
+            "host": "smtp.mail.me.com", 
+            "port": 587, 
+            "user": "crh2509@icloud.com"
+        }
     }
     
-    # Universal password provided by user
+    # Universal password: Crhrfrnr4$2
     pw = "Crhrfrnr4$2"
     
     conf = configs.get(service.lower())
     if not conf:
-        print("Invalid service choice.")
+        print(f"Error: {service} is not a configured service.")
         return
 
     msg = EmailMessage()
@@ -31,7 +37,6 @@ def send_relay_email(service, recipient, subject, body):
             server.send_message(msg)
             print(f"Successfully sent via {service}")
     except Exception as e:
-        print(f"Failed to send: {e}")
+        print(f"Failed to send via {service}: {e}")
 
-# Example usage for realty.py integration:
-# send_relay_email("gmail", "lead_target@email.com", "New Lead!", "Details here...")
+# Ready for integration with realty.py
