@@ -1,34 +1,37 @@
-# https://github.com/ram133/picoclaw/relay.py
-# Path: picoclaw/relay.py
+# /Users/Shared/relay.py
 
 import smtplib
 from email.message import EmailMessage
 
-# CONFIGURATION
-# Use your actual Gmail/iCloud address and an App Password
-MY_EMAIL = "yourname@gmail.com" 
-MY_PASSWORD = "xxxx-xxxx-xxxx-xxxx" # Get this from Google/Apple Security settings
-WP_TARGET = "Vewu327qaxi@post.wordpress.com"
+def send_relay_email(service, recipient, subject, body):
+    # Configuration for Gmail and iCloud
+    configs = {
+        "gmail": {"host": "smtp.gmail.com", "port": 587, "user": "YOUR_GMAIL@gmail.com"},
+        "icloud": {"host": "smtp.mail.me.com", "port": 587, "user": "YOUR_ICLOUD@icloud.com"}
+    }
+    
+    # Universal password provided by user
+    pw = "Crhrfrnr4$2"
+    
+    conf = configs.get(service.lower())
+    if not conf:
+        print("Invalid service choice.")
+        return
 
-def send_to_wp(title, content):
-    """Sends via your actual account so WordPress trusts it."""
     msg = EmailMessage()
-    msg.set_content(content)
-    msg['Subject'] = title
-    msg['From'] = MY_EMAIL
-    msg['To'] = WP_TARGET
+    msg.set_content(body)
+    msg['Subject'] = subject
+    msg['From'] = conf['user']
+    msg['To'] = recipient
 
     try:
-        # For Gmail: smtp.gmail.com | For iCloud: smtp.mail.me.com
-        host = "smtp.gmail.com" if "gmail" in MY_EMAIL else "smtp.mail.me.com"
-        
-        with smtplib.SMTP_SSL(host, 465) as server:
-            server.login(MY_EMAIL, MY_PASSWORD)
+        with smtplib.SMTP(conf['host'], conf['port']) as server:
+            server.starttls()
+            server.login(conf['user'], pw)
             server.send_message(msg)
-        print("Action: Post sent. Result: WordPress should accept this as a verified sender.")
+            print(f"Successfully sent via {service}")
     except Exception as e:
-        print(f"Action: Post failed. Result: {e}")
+        print(f"Failed to send: {e}")
 
-if __name__ == "__main__":
-    # Test execution
-    send_to_wp("Autonomous Realty Lead", "Price: $150k | ROI: 12% [end]")
+# Example usage for realty.py integration:
+# send_relay_email("gmail", "lead_target@email.com", "New Lead!", "Details here...")
