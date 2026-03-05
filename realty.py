@@ -1,53 +1,42 @@
-# File: realty.py
-# URL: https://github.com/ram133/picoclaw/blob/main/realty.py
+# https://github.com/ram133/picoclaw/realty.py
+# Path: picoclaw/realty.py
 
 import json
-import csv
-import time
 
-class RealtyBot:
-    def __init__(self):
-        self.listings = []
-        self.filename = "leads.csv"
+def calculate_lead_score(price, est_rent, days_on_market):
+    """
+    Autonomously scores real estate leads for income potential.
+    High score = High ROI / Fast turnaround.
+    """
+    if price <= 0: return 0
+    
+    # Calculate Price-to-Rent Ratio (Lower is usually better for cash flow)
+    rent_ratio = price / (est_rent * 12)
+    
+    # Score calculation: Weighted towards low ratio and low days on market
+    score = (100 / rent_ratio) + (50 / (days_on_market + 1))
+    return round(score, 2)
 
-    def fetch_market_data(self):
-        """
-        Simulates autonomous fetching of market data from public APIs/Resources.
-        In a production environment, this would interface with RapidAPI or BeautifulSoup.
-        """
-        # Placeholder for autonomous data retrieval logic
-        mock_data = [
-            {"address": "123 Maple St", "price": 250000, "market_value": 280000},
-            {"address": "456 Oak Ave", "price": 450000, "market_value": 445000},
-            {"address": "789 Pine Rd", "price": 180000, "market_value": 210000}
-        ]
-        self.listings = mock_data
-        print(f"Retrieved {len(self.listings)} current listings.")
-
-    def analyze_deals(self):
-        """Identifies properties listed below market value."""
-        leads = [item for item in self.listings if item['price'] < item['market_value']]
-        print(f"Found {len(leads)} potential income-generating leads.")
-        return leads
-
-    def export_leads(self, leads):
-        """Saves leads to a CSV file for immediate follow-up."""
-        if not leads:
-            return
-        
-        keys = leads[0].keys()
-        with open(self.filename, 'w', newline='') as output_file:
-            dict_writer = csv.DictWriter(output_file, fieldnames=keys)
-            dict_writer.writeheader()
-            dict_writer.writerows(leads)
-        print(f"Leads successfully exported to {self.filename}")
-
-    def run_autonomous_cycle(self):
-        """Executes the full pipeline without intervention."""
-        self.fetch_market_data()
-        deals = self.analyze_deals()
-        self.export_leads(deals)
+def process_listings(listings):
+    scored_listings = []
+    for property in listings:
+        score = calculate_lead_score(
+            property.get('price', 0), 
+            property.get('est_rent', 0), 
+            property.get('days_on_market', 0)
+        )
+        property['lead_score'] = score
+        scored_listings.append(property)
+    
+    # Sort by highest score first
+    return sorted(scored_listings, key=lambda x: x['lead_score'], reverse=True)
 
 if __name__ == "__main__":
-    bot = RealtyBot()
-    bot.run_autonomous_cycle()
+    # Example autonomous execution with sample data
+    sample_data = [
+        {"address": "123 Alpha St", "price": 250000, "est_rent": 2100, "days_on_market": 5},
+        {"address": "456 Beta Ave", "price": 400000, "est_rent": 2800, "days_on_market": 30}
+    ]
+    
+    results = process_listings(sample_data)
+    print(f"Top Lead: {results[0]['address']} - Score: {results[0]['lead_score']}")
