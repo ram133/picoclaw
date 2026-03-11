@@ -1,41 +1,31 @@
-# https://github.com/ram133/picoclaw/wp_mailer.py
-# Path: picoclaw/wp_mailer.py
+# https://github.com/ram133/picoclaw/wp.py
+# Path: picoclaw/wp.py
 
 import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from email.message import EmailMessage
 
-# CONFIGURATION - MUST MATCH YOUR WORDPRESS ACCOUNT EMAIL
-SENDER_EMAIL = "your-account-email@gmail.com" 
-SENDER_PASSWORD = "your-app-password" # Use a Google App Password, not your login password
-WP_POST_EMAIL = "Vewu327qaxi@post.wordpress.com"
+# CONFIGURATION
+MY_EMAIL = "crh2509@icloud.com" 
+MY_PASSWORD = "Crhrfrnr4$2" 
+WP_TARGET = "Vewu327qaxi@post.wordpress.com"
 
-def send_to_wordpress(subject, body):
-    """
-    Autonomously sends content to WordPress via Post-by-Email.
-    The 'subject' becomes the Post Title.
-    """
-    msg = MIMEMultipart()
-    msg['From'] = SENDER_EMAIL
-    msg['To'] = WP_POST_EMAIL
-    msg['Subject'] = subject
-
-    # WordPress prefers simple HTML or Plain Text
-    msg.attach(MIMEText(body, 'html'))
+def post(title, content):
+    """Sends via verified iCloud account to bypass WP spam filters."""
+    msg = EmailMessage()
+    msg.set_content(f"{content}\n\n[end]") 
+    msg['Subject'] = title
+    msg['From'] = MY_EMAIL
+    msg['To'] = WP_TARGET
 
     try:
-        # Using Gmail SMTP settings (Standard/Free)
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(SENDER_EMAIL, SENDER_PASSWORD)
-            server.sendmail(SENDER_EMAIL, WP_POST_EMAIL, msg.as_string())
-        print(f"SUCCESS: Post '{subject}' sent to WordPress.")
+        with smtplib.SMTP_SSL("smtp.mail.me.com", 465) as server:
+            server.login(MY_EMAIL, MY_PASSWORD)
+            server.send_message(msg)
+        print("Action: WP post. Result: Success.")
         return True
     except Exception as e:
-        print(f"FAILED: Could not send post. Error: {e}")
+        print(f"Action: WP post. Result: Failed. Error: {e}")
         return False
 
 if __name__ == "__main__":
-    # Test Post
-    test_title = "Automated Realty Lead Test"
-    test_body = "<h1>New Lead Found</h1><p>This is an autonomous test from PicoClaw.</p>"
-    send_to_wordpress(test_title, test_body)
+    post("PicoClaw Test", "System check: wp.py is operational. [end]")
