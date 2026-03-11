@@ -40,6 +40,12 @@ if __name__ == "__main__":
     results = process_listings(sample_data)
     for res in results:
         print(f"Score: {res['lead_score']} | {res['address']}")
+    export_leads(results)        {"address": "456 Beta Ave", "price": 400000, "est_rent": 2800, "days_on_market": 30},
+        {"address": "789 Gamma Rd", "price": 150000, "est_rent": 1400, "days_on_market": 2}
+    ]
+    results = process_listings(sample_data)
+    for res in results:
+        print(f"Score: {res['lead_score']} | {res['address']}")
     export_leads(results)            property.get('days_on_market', 0)
         )
         property['lead_score'] = score
