@@ -5,24 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RayNV Billing</title>
     <style>
-        body { font-family: sans-serif; background: #000; color: #fff; padding: 20px; }
-        .card { border: 1px solid #333; padding: 15px; border-radius: 8px; max-width: 400px; }
-        .stat { font-size: 24px; color: #00ff00; }
-        button { background: #00ff00; color: #000; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; }
+        body { font-family: sans-serif; background: #000; color: #fff; text-align: center; padding: 20px; }
+        .card { border: 1px solid #333; padding: 20px; border-radius: 8px; max-width: 400px; margin: auto; }
+        .meter { font-size: 24px; color: #0f0; margin: 15px 0; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        button { background: #222; color: #fff; border: 1px solid #444; padding: 10px; cursor: pointer; border-radius: 4px; }
+        button:hover { background: #333; }
+        .pay-btn { background: #0070ba; border: none; width: 100%; margin-top: 20px; font-weight: bold; }
+        .pay-btn:hover { background: #005ea6; }
     </style>
 </head>
 <body>
     <div class="card">
-        <h2>System Meter</h2>
-        <div class="stat" id="usage">0.00 units</div>
+        <h2>RayNV Billing</h2>
+        <div class="meter">0.00 units</div>
         <p>Current Rate: $0.01/unit</p>
-        <button onclick="updateMeter()">Refresh Status</button>
+        
+        <hr style="border:0; border-top:1px solid #333;">
+        
+        <h3>Select Credit Amount</h3>
+        <div class="grid">
+            <button onclick="selectAmount(100, 1.00)">100 Units ($1.00)</button>
+            <button onclick="selectAmount(500, 5.00)">500 Units ($5.00)</button>
+            <button onclick="selectAmount(1000, 10.00)">1000 Units ($10.00)</button>
+            <button onclick="selectAmount(5000, 50.00)">5000 Units ($50.00)</button>
+        </div>
+
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_xclick">
+            <input type="hidden" name="business" value="CRH2509@iCloud.com">
+            <input type="hidden" name="item_name" id="item_name" value="Select units above">
+            <input type="hidden" name="amount" id="item_price" value="0.00">
+            <input type="hidden" name="currency_code" value="USD">
+            <button type="submit" class="pay-btn">Authorize with PayPal</button>
+        </form>
     </div>
+
     <script>
-        function updateMeter() {
-            fetch('/billing.py?action=status')
-                .then(res => res.json())
-                .then(data => document.getElementById('usage').innerText = data.usage + ' units');
+        function selectAmount(units, price) {
+            document.getElementById('item_name').value = units + " Units for Microbilling";
+            document.getElementById('item_price').value = price.toFixed(2);
+            alert("Selected: " + units + " units for $" + price.toFixed(2));
         }
     </script>
 </body>
