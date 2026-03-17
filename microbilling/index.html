@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RayNV Billing</title>
+    <style>
+        body { font-family: sans-serif; background: #000; color: #fff; padding: 20px; }
+        .card { border: 1px solid #333; padding: 15px; border-radius: 8px; max-width: 400px; }
+        .stat { font-size: 24px; color: #00ff00; }
+        button { background: #00ff00; color: #000; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>System Meter</h2>
+        <div class="stat" id="usage">0.00 units</div>
+        <p>Current Rate: $0.01/unit</p>
+        <button onclick="updateMeter()">Refresh Status</button>
+    </div>
+    <script>
+        function updateMeter() {
+            fetch('/billing.py?action=status')
+                .then(res => res.json())
+                .then(data => document.getElementById('usage').innerText = data.usage + ' units');
+        }
+    </script>
+</body>
+</html>
