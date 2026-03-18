@@ -1,0 +1,38 @@
+/* /picoclaw/microbilling/style.css */
+body {
+    background-color: #0d0d0d;
+    color: #00ff41;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+.terminal-container {
+    border: 1px solid #00ff41;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 0 15px #00ff41;
+}
+#status-board {
+    background: #1a1a1a;
+    padding: 10px;
+    margin: 20px 0;
+    border-left: 5px solid #00ff41;
+}
+button {
+    width: 100%;
+    padding: 15px;
+    background: #00ff41;
+    color: black;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+#log-display {
+    margin-top: 20px;
+    font-size: 0.8rem;
+    color: #008f11;
+    max-height: 100px;
+    overflow-y: auto;
+}
