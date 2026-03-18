@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PicoClaw Work Terminal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="terminal-container">
+        <h1>PICOCLAW WORK TERMINAL</h1>
+        <p>PATH: /picoclaw/microbilling/work.html</p>
+        <div id="status-board">
+            <p>STATUS: <span id="status-text">IDLE</span></p>
+            <p>ACTIVE TASK: <span id="task-name">NONE</span></p>
+            <p>SESSION CREDIT: $<span id="live-billing">0.00</span></p>
+        </div>
+        <button id="action-btn" onclick="toggleWork()">Start Micro-Billing Task</button>
+        <div id="log-display"></div>
+    </div>
+    <script src="billing.js"></script>
+</body>
+</html>
