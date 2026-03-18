@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Portal - Upload Work</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f7f6; padding: 20px; }
+        .card { background: white; max-width: 500px; margin: 40px auto; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        h2 { margin-top: 0; color: #333; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; color: #555; }
+        input[type="text"], input[type="number"], textarea { 
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px;
+        }
+        .upload-zone { 
+            border: 2px dashed #007bff; background: #f0f7ff; padding: 30px; text-align: center; border-radius: 10px; cursor: pointer; transition: 0.3s;
+        }
+        .upload-zone:hover { background: #e1efff; border-color: #0056b3; }
+        .upload-zone p { margin: 0; color: #007bff; font-weight: 500; }
+        .file-list { margin-top: 10px; font-size: 0.9em; color: #666; }
+        .btn-launch { 
+            width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px;
+        }
+        .btn-launch:active { transform: translateY(1px); }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Post a Micro-Task</h2>
+    <p style="color:#777; font-size: 0.9em; margin-bottom: 25px;">Provide the instructions and files for the worker pool.</p>
+
+    <div class="form-group">
+        <label>Task Title</label>
+        <input type="text" id="taskTitle" placeholder="e.g., Extract text from these 5 images">
+    </div>
+
+    <div class="form-group">
+        <label>Budget ($)</label>
+        <input type="number" id="budget" step="0.01" placeholder="1.50">
+    </div>
+
+    <div class="form-group">
+        <label>Upload Work for Worker</label>
+        <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+            <p>Click here to select files to upload</p>
+            <span style="font-size: 0.8em; color: #888;">Images, CSVs, or PDFs</span>
+            <input type="file" id="fileInput" multiple style="display: none;" onchange="updateFileList()">
+        </div>
+        <div id="fileList" class="file-list"></div>
+    </div>
+
+    <button class="btn-launch" onclick="launchTask()">Launch & Fund Task</button>
+</div>
+
+<script>
+    function updateFileList() {
+        const input = document.getElementById('fileInput');
+        const list = document.getElementById('fileList');
+        list.innerHTML = '';
+        for (let i = 0; i < input.files.length; i++) {
+            list.innerHTML += '<div>📄 ' + input.files[i].name + '</div>';
+        }
+    }
+
+    function launchTask() {
+        const title = document.getElementById('taskTitle').value;
+        if (!title) {
+            alert("Please provide a task title.");
+            return;
+        }
+        alert("Task '" + title + "' has been broadcast to workers!");
+    }
+</script>
+
+</body>
+</html>
