@@ -1,0 +1,74 @@
+https://ram133.github.io/picoclaw/microbilling/work.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>work</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #00FF00;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            border: 2px solid #00FF00;
+            padding: 30px;
+            width: 85%;
+            max-width: 500px;
+            box-shadow: 0 0 20px #00FF00;
+        }
+        .header {
+            font-size: 1.2rem;
+            border-bottom: 1px solid #00FF00;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        .status-line {
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+        .action-btn {
+            background-color: #00FF00;
+            color: #000000;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            font-family: inherit;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .action-btn:hover {
+            background-color: #00CC00;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">PICOCLAW WORK TERMINAL</div>
+        <div class="status-line">PATH: /picoclaw/microbilling/work.html</div>
+        <div class="status-line">LINK: ACTIVE</div>
+        <div class="status-line">TASK: WAITING</div>
+        
+        <button class="action-btn" onclick="run()">Start Micro-Billing Task</button>
+    </div>
+
+    <script>
+        function run() {
+            console.log('Work sequence started.');
+            alert('Task sequence initiated.');
+        }
+    </script>
+
+</body>
+</html>
