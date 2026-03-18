@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PicoClaw Work Terminal</title>
+    <style>
+        body { background: #000; color: #0f0; font-family: monospace; padding: 20px; }
+        .terminal { border: 1px solid #0f0; padding: 20px; max-width: 600px; margin: auto; }
+        .status-bar { border-bottom: 1px solid #0f0; margin-bottom: 20px; padding-bottom: 10px; }
+        .task-box { background: #111; padding: 15px; border: 1px dashed #0f0; margin: 10px 0; }
+        .btn { background: #0f0; color: #000; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; }
+        .btn:hover { background: #0a0; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="terminal">
+    <h1>PICOCLAW WORK TERMINAL</h1>
+    <p>PATH: /picoclaw/microbilling/work.html</p>
+    
+    <div class="status-bar">
+        STATUS: <span id="status">IDLE</span><br>
+        SESSION CREDIT: <span id="credit">$0.00</span>
+    </div>
+
+    <div id="setup-view">
+        <button class="btn" onclick="startWork()">Start Micro-Billing Task</button>
+    </div>
+
+    <div id="work-view" class="hidden">
+        <div class="task-box">
+            <strong>ACTIVE TASK:</strong> <span id="task-id">#7721</span><br>
+            <strong>DESCRIPTION:</strong> <span id="task-desc">Loading next available task...</span><br>
+            <strong>SOURCE FILE:</strong> <a id="source-link" href="#" style="color: #0f0;">[Download Customer File]</a>
+        </div>
+        <p>Timer: <span id="timer">00:00</span></p>
+        <button class="btn" style="background: #f00;" onclick="stopWork()">Submit & End Session</button>
+    </div>
+</div>
+
+<script>
+    let seconds = 0;
+    let timerInterval;
+
+    function startWork() {
+        document.getElementById('setup-view').classList.add('hidden');
+        document.getElementById('work-view').classList.remove('hidden');
+        document.getElementById('status').innerText = "LIVE - BILLING";
+        
+        // Simulating data fetch from a customer upload
+        document.getElementById('task-desc').innerText = "Analyze the attached document for data entry.";
+        document.getElementById('source-link').href = "/uploads/customer_file_sample.pdf";
+
+        timerInterval = setInterval(() => {
+            seconds++;
+            let mins = Math.floor(seconds / 60);
+            let secs = seconds % 60;
+            document.getElementById('timer').innerText = 
+                (mins < 10 ? "0" + mins : mins) + ":" + (secs < 10 ? "0" + secs : secs);
+            
+            // Increment credit (e.g., $0.01 per 10 seconds)
+            document.getElementById('credit').innerText = "$" + (seconds * 0.001).toFixed(2);
+        }, 1000);
+    }
+
+    function stopWork() {
+        clearInterval(timerInterval);
+        alert("Task submitted. Final Credit: " + document.getElementById('credit').innerText);
+        location.reload();
+    }
+</script>
+
+</body>
+</html>
